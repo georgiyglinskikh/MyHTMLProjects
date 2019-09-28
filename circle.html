@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>circle</title>
+</head>
+<body>
+<style>
+    body {
+        background-color: #2f2f2f;
+    }
+
+    #c {
+        width: 720px;
+        height: 720px;
+        background-color: #000000;
+    }
+</style>
+<canvas id="c" width="720px" height="720px">Your pc doesnt support canvas</canvas>
+<script>
+    var c = document.getElementById("c"), ctx = c.getContext("2d");
+
+    var mode, coof1 = 0, coof2 = 0;
+    
+    function update(evt) {
+
+        if(evt.key === "q" || evt.y < 240 && evt.x < 240) mode = "q";
+        if(evt.key === "w" || evt.y < 240 && 480 < evt.x) mode = "w";
+        if(evt.key === "e" || 480 < evt.x && 480 < evt.y) mode = "e";
+        if(evt.key === "r" || evt.x < 240 && 480 < evt.y) mode = "r";
+
+        if (evt.key === "ArrowUp" || (evt.y < 240 && 240 < evt.x && evt.x < 480)) coof1++;
+        if (evt.key === "ArrowDown" || (480 < evt.y && 240 < evt.x && evt.x < 480)) coof1--;
+        if (evt.key === "ArrowRight" || (480 < evt.x && 240 < evt.y && evt.y < 480)) coof2++;
+        if (evt.key === "ArrowLeft" || (evt.x < 240 && 240 < evt.y && evt.y < 480)) coof2--;
+
+        draw();
+    }
+
+    function draw() {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, 720, 720);
+        switch (mode) {
+            case "q": {
+                ctx.beginPath();
+                for (let i = 0; Math.abs(i) < 360; i += coof1 !== 0 ? coof1 : 1) {
+                    for (let j = 0; Math.abs(j) < 360; j += coof1 !== 0 ? coof1 : 1) {
+                        ctx.lineTo((Math.cos(i * Math.PI / 180) * 360 + 360), (Math.sin(i * Math.PI / 180) * 360 + 360));
+                        ctx.lineTo((Math.cos(j * Math.PI / 180) * 360 + 360), (Math.sin(j * Math.PI / 180) * 360 + 360));
+                    }
+                }
+                ctx.strokeStyle = "blue";
+                ctx.stroke();
+                break;
+            }
+            case "w": {
+                ctx.beginPath();
+                for (let i = 0; i < 360; i++) {
+                    for (let j = -coof1; j < coof1; j += coof1) {
+                        ctx.lineTo((Math.cos(i * Math.PI / 180) * 360 + 360), (Math.sin(i * Math.PI / 180) * 360 + 360));
+                        ctx.lineTo((Math.cos(j * Math.PI / 180) * 360 + 360), (Math.sin(j * Math.PI / 180) * 360 + 360));
+                    }
+                }
+                ctx.strokeStyle = "blue";
+                ctx.stroke();
+                break;
+            }
+            case "e": {
+                ctx.beginPath();
+                for (let i = 0; ; i += coof1) {
+                    if (i % 360 === 0 && i !== 0) break;
+                    ctx.lineTo((Math.cos(i * Math.PI / 180) * 360 + 360), (Math.sin(i * Math.PI / 180) * 360 + 360));
+                    ctx.lineTo((Math.cos((i + coof1) * Math.PI / 180) * 360 + 360), (Math.sin((i + coof1) * Math.PI / 180) * 360 + 360));
+                }
+                ctx.strokeStyle = "blue";
+                ctx.stroke();
+                break;
+            }
+            case "r": {
+                ctx.beginPath();
+                for (let i = 0; Math.abs(i) < 360; i += (coof1 === 0 ? 1 : coof1)) {
+                    ctx.lineTo((Math.cos(i * Math.PI / 180) * 360 + 360), (Math.sin(i * Math.PI / 180) * 360 + 360));
+                    ctx.lineTo((Math.cos((i * (coof2 === 0 ? 1 : coof2)) * Math.PI / 180) * 360 + 360), (Math.sin((i * (coof2 === 0 ? 1 : coof2)) * Math.PI / 180) * 360 + 360));
+                }
+                ctx.strokeStyle = "blue";
+                ctx.stroke();
+                break;
+            }
+        }
+    }
+
+    document.addEventListener("keydown", evt => update(evt));
+    document.addEventListener("click", evt => update(evt))
+</script>
+</body>
+</html>

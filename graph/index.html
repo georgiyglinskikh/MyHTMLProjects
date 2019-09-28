@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Roboto+Mono|Roboto+Slab&display=swap"
+        rel="stylesheet">
+    <title>graph</title>
+</head>
+
+<body>
+    <style>
+        @media (orientation: portrait) {
+            body {
+                margin: 0 0 0 0;
+            }
+
+            #expression {
+                width: 80%;
+                margin: 0 10% 1% 10%;
+            }
+
+            #canvas {
+                width: 90%;
+                margin: 1% 5% 1% 5%;
+            }
+        }
+
+        @media (orientation: landscape) {
+            body {
+                background: #388E3C;
+                margin: 0 20% 0 20%;
+            }
+
+            #expression {
+                width: 60%;
+                margin: 0 20% 1% 20%;
+            }
+
+            #canvas {
+                width: 80%;
+                margin: 1% 10% 1% 10%;
+            }
+        }
+
+        #content {
+            height: 100vh;
+            background: #C8E6C9;
+        }
+
+        #expression {
+            border: none;
+        }
+    </style>
+
+    <div id="content">
+        <canvas width="1000px" height="1000px" id="canvas"></canvas><br>
+
+        <input type="text" name="expression" id="expression">
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>mandelbrot</title>
+</head>
+
+<body>
+    <canvas width="720" height="720" id="canvas">Your browser doesnt support canvas</canvas>
+
+    <input type="radio" name="dementions" id="dementions1D">
+    <label for="dementions1D">1D</label>
+    <input type="radio" name="dementions" id="dementions2D">
+    <label for="dementions2D">2D</label>
+
+    <input type="radio" name="experimental" id="experimental">
+    <label for="experimental">experimental</label>
+    <input type="radio" name="experimental" id="normal">
+    <label for="normal">normal</label>
+    <script>
+        var canvas = /** @type {HTMLCanvasElement} */ (document.getElementById("canvas"));
+        var canvasContext = canvas.getContext("2d");
+
+        var dementions1D = /** @type {HTMLInputElement} */ (document.getElementById("dementions1D"));
+        var dementions2D = /** @type {HTMLInputElement} */ (document.getElementById("dementions2D"));
+
+        var experimental = /** @type {HTMLInputElement} */ (document.getElementById("experimental"));
+        var normal = /** @type {HTMLInputElement} */ (document.getElementById("normal"));
+
+        canvas.addEventListener("mousemove", (event) => { changeGraphic(event.x, event.y) });
+
+        const numOfIterations = 10;
+
+        const convertToLocal = (num) => (num - 360) / 60;
+        const convertToNormal = (num) => num * 60 + 360;
+
+        function clear(color) {
+            canvasContext.fillStyle = color;
+            canvasContext.fillRect(0, 0, 720, 720);
+        }
+
+        function drawLine(x0, y0, x1, y1, color) {
+            canvasContext.strokeStyle = color;
+            canvasContext.beginPath();
+            canvasContext.moveTo(x0, y0);
+            canvasContext.lineTo(x1, y1);
+            canvasContext.closePath();
+            canvasContext.stroke();
+        }
+
+        function drawText(x, y, /** @type {String} */text, color) {
+            canvasContext.fillStyle = color;
+            canvasContext.fillText(text, x, y);
+        }
+
+        function changeGraphic(x, y) {
+            clear('#fff');
+
+            if (dementions1D.checked) {
+                drawLine(0, 360, 720, 360, "#ccc");
+
+                for (let i = 0; i < 12; i++) {
+                    drawLine(i * 60, 355, i * 60, 365, "#aaa");
+                    drawText(i * 60, 370, String(i - 6), "#aaa");
+                }
+
+                let startX = convertToLocal(x);
+                let tempX = startX;
+
+                for (let x = 0; x < numOfIterations; x++) {
+                    drawLine(convertToNormal(tempX), 350, convertToNormal(tempX), 370, "#111");
+
+                    if (normal.checked || experimental.checked)
+                        tempX = Math.pow(tempX, 2);
+                }
+
+                drawLine(convertToNormal(startX), 360, convertToNormal(tempX), 360, "#000");
+            }
+            if (dementions2D.checked) {
+                drawLine(0, 360, 720, 360, "#ccc");
+                drawLine(360, 0, 360, 720, "#ccc");
+
+                for (let i = 0; i < 12; i++) {
+                    drawLine(355, i * 60, 365, i * 60, "#aaa");
+                    drawText(370, i * 60, String(i - 6), "#aaa");
+                }
+
+                for (let i = 0; i < 12; i++) {
+                    drawLine(i * 60, 355, i * 60, 365, "#aaa");
+                    drawText(i * 60, 370, String(i - 6), "#aaa");
+                }
+
+                let startX = convertToLocal(x), startY = convertToLocal(y);
+                let tempX1 = startX, tempY1 = startY, tempX2, tempY2;
+
+                for (let i = 0; i < numOfIterations; i++) {
+                    tempX2 = tempX1;
+                    tempY2 = tempY1;
+
+                    /* if (experimental.checked) {
+                        tempX1 = Math.pow(tempX1, 2) + tempY1;
+                        tempY1 = tempX1;
+                    } */
+
+                    if (normal.checked) {
+                        tempX1 = Math.pow(tempX1, 2);
+                        tempY1 = Math.pow(tempY1, 2);
+                    }
+
+                    drawLine(convertToNormal(tempX1) - 5, convertToNormal(tempY1), convertToNormal(tempX1) + 5, convertToNormal(tempY1), "#111");
+                    drawLine(convertToNormal(tempX1), convertToNormal(tempY1) - 5, convertToNormal(tempX1), convertToNormal(tempY1) + 5, "#111");
+
+                    // TODO : change experimentals; draw lines between two points;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

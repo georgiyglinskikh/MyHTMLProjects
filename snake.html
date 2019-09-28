@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>snake</title>
+</head>
+<body>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    #canvas {
+        /*width: 100%;
+        height: 100%;*/
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+</style>
+
+<canvas id="canvas" onclick="game.smartRestart();">Ваш браузер не поддерживает canvas</canvas>
+
+<script>
+
+    var canvas = document.getElementById("canvas"),
+        ctx = canvas.getContext("2d"),
+        game;
+
+    var winX, winY;
+
+    class Part {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    class Fruit {
+        changePos() {
+            this.x = Math.round(Math.random() * (winX / 10)) * 10;
+            this.y = Math.round(Math.random() * (winY / 10)) * 10;
+        }
+
+        constructor() {
+            this.x = 0;
+            this.y = 0;
+        }
+    }
+
+    class Snake {
+        isEat() {
+            let eat = false;
+            for(let i = 0; i < this.body.length; i++) {
+                if(this.body[i].x === this.fruit.x &&
+                    this.body[i].y === this.fruit.y) {
+                    eat = true;
+                }
+            }
+            return eat
+        }
+
+        isEnd() {
+            if(!game.endless) {
+                let end = false;
+                for(let i = 0; i < this.body.length - 1; i++) {
+                    if(this.body[this.body.length - 1].x === this.body[i].x &&
+                        this.body[this.body.length - 1].y === this.body[i].y) {
+                        end = true;
+                    }
+                }
+                return end;
+            }
+            return false;
+        }
+
+        move(vector) {
+            if (this.isEat()) {
+                this.body[this.body.length] = new Part(this.body[this.body.length - 1].x, this.body[this.body.length - 1].y);
+
+                if(vector === "a")
+                    this.body[this.body.length - 1].x -= 10;
+                else if(vector === "w")
+                    this.body[this.body.length - 1].y -= 10;
+                else if(vector === "d")
+                    this.body[this.body.length - 1].x += 10;
+                else if(vector === "s")
+                    this.body[this.body.length - 1].y += 10;
+
+                this.fruit.changePos();
+            } else {
+                for (let i = 0; i < this.body.length - 1; i++)
+                {
+                    this.body[i].x = this.body[i + 1].x;
+                    this.body[i].y = this.body[i + 1].y;
+                }
+                if (vector === "a")
+                    this.body[this.body.length - 1].x -= 10;
+                else if (vector === "w")
+                    this.body[this.body.length - 1].y -= 10;
+                else if (vector === "d")
+                    this.body[this.body.length - 1].x += 10;
+                else if (vector === "s")
+                    this.body[this.body.length - 1].y += 10;
+                if (!(this.body[this.body.length - 1].x < winX && this.body[this.body.length - 1].y < winY &&
+                    this.body[this.body.length - 1].x >= 0 && this.body[this.body.length - 1].y >= 0)) {
+                    if(this.body[this.body.length - 1].x >= winX) {
+                        this.body[this.body.length - 1].x = this.body[this.body.length - 1].x - winX;
+                    }
+                    else if(this.body[this.body.length - 1].y >= winY) {
+                        this.body[this.body.length - 1].y = this.body[this.body.length - 1].y - winY;
+                    }
+                    else if(this.body[this.body.length - 1].x < 0) {
+                        this.body[this.body.length - 1].x = this.body[this.body.length - 1].x + winX;
+                    }
+                    else if(this.body[this.body.length - 1].y < 0) {
+                        this.body[this.body.length - 1].y = this.body[this.body.length - 1].y + winY;
+                    }
+                }
+            }
+        }
+
+        constructor() {
+            this.body = Array();
+            this.body[0] = new Part(10, 10);
+            this.fruit = new Fruit();
+            this.fruit.changePos();
+        }
+    }
+
+    class Game {
+        smartRestart() {
+            if(this.snake.isEnd())
+                game = new Game();
+        }
+
+        clear() {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, winX, winY);
+        }
+
+        draw() {
+            for(let i = 0; i < this.snake.body.length; i++) {
+                ctx.fillStyle = "#0f0";
+                ctx.fillRect(this.snake.body[i].x, this.snake.body[i].y, 10, 10)
+            }
+            ctx.fillStyle = "#f00";
+            ctx.fillRect(this.snake.fruit.x, this.snake.fruit.y, 10, 10);
+        }
+
+        update() {
+            if(winX !== Math.round((window.innerWidth / 10)) * 10 ||
+                winY !== Math.round((window.innerHeight / 10)) * 10) {
+                winX = Math.round((window.innerWidth / 10)) * 10;
+                winY = Math.round((window.innerHeight / 10)) * 10;
+                canvas.width = winX;
+                canvas.height = winY;
+            }
+            this.snake.move(this.event)
+        }
+
+        run() {
+            var interval = setInterval(() => {
+                if(!this.snake.isEnd()) {
+                    if (this.isAuto) this.auto();
+                    this.update();
+                    this.clear();
+                    this.draw();
+                } else {
+                    ctx.fillStyle = "Black";
+                    ctx.font = "30pt 'Times New Roman'";
+                    ctx.fillText("You lose! Your score:" + this.snake.body.length + "!", 50, 250);
+                    ctx.fillText("Press on canvas to restart", 20, 400);
+                    clearInterval(interval);
+                }
+            }, 1000 / 15);
+
+        }
+
+        auto() {
+            if(this.smartAuto) {
+                let f1 = true, f2 = true, f3 = true, f4 = true;
+
+                for(let i = 0; i < this.snake.body.length - 1; i++) {
+                    if((this.snake.body[i].x + 10) % winX === this.snake.body[this.snake.body.length-1].x &&
+                        this.snake.body[i].y === this.snake.body[this.snake.body.length-1].y) f1 = false;
+                    if((this.snake.body[i].y + 10) % winY === this.snake.body[this.snake.body.length-1].y &&
+                        this.snake.body[i].x === this.snake.body[this.snake.body.length-1].x) f2 = false;
+                    if((this.snake.body[i].x - 10) % winX === this.snake.body[this.snake.body.length-1].x &&
+                        this.snake.body[i].y === this.snake.body[this.snake.body.length-1].y) f3 = false;
+                    if((this.snake.body[i].y - 10) % winY === this.snake.body[this.snake.body.length-1].y &&
+                        this.snake.body[i].x === this.snake.body[this.snake.body.length-1].x) f4 = false;
+                }
+
+                if((this.snake.fruit.x < this.snake.body[this.snake.body.length-1].x ||
+                    this.snake.fruit.x - this.snake.body[this.snake.body.length-1].x > winX / 2) &&
+                    this.event !== "d" && f1) {
+                    this.event = "a";
+                }
+
+                else if((this.snake.fruit.y < this.snake.body[this.snake.body.length-1].y ||
+                    this.snake.fruit.y - this.snake.body[this.snake.body.length-1].y > winY / 2) &&
+                    this.event !== "s" && f2) {
+                    this.event = "w";
+                }
+
+                else if((this.snake.fruit.x > this.snake.body[this.snake.body.length-1].x ||
+                    this.snake.body[this.snake.body.length-1].x - this.snake.fruit.x > winX / 2) &&
+                    this.event !== "a" && f3) {
+                    this.event = "d";
+                }
+
+                else if((this.snake.fruit.y > this.snake.body[this.snake.body.length-1].y ||
+                    this.snake.body[this.snake.body.length-1].y - this.snake.fruit.y > winY / 2) &&
+                    this.event !== "w" && f4) {
+                    this.event = "s";
+                }
+
+                if(!f1 && this.event === "a") this.event = "s";
+                if(!f2 && this.event === "w") this.event = "a";
+                if(!f3 && this.event === "d") this.event = "w";
+                if(!f4 && this.event === "s") this.event = "d";
+
+                if(!f1 && !f2 && this.event === "a") this.event = "s";
+                if(!f1 && !f2 && this.event === "w") this.event = "d";
+
+                if(!f2 && !f3 && this.event === "w") this.event = "a";
+                if(!f2 && !f3 && this.event === "d") this.event = "s";
+
+                if(!f3 && !f4 && this.event === "s") this.event = "a";
+                if(!f3 && !f4 && this.event === "d") this.event = "w";
+
+                if(!f4 && !f1 && this.event === "s") this.event = "d";
+                if(!f4 && !f1 && this.event === "a") this.event = "w";
+            } else {
+                if((this.snake.fruit.x < this.snake.body[this.snake.body.length-1].x ||
+                    this.snake.fruit.x - this.snake.body[this.snake.body.length-1].x > winX / 2) &&
+                    this.event !== "d") {
+                    this.event = "a";
+                }
+
+                else if((this.snake.fruit.y < this.snake.body[this.snake.body.length-1].y ||
+                    this.snake.fruit.y - this.snake.body[this.snake.body.length-1].y > winY / 2) &&
+                    this.event !== "s") {
+                    this.event = "w";
+                }
+
+                else if((this.snake.fruit.x > this.snake.body[this.snake.body.length-1].x ||
+                    this.snake.body[this.snake.body.length-1].x - this.snake.fruit.x > winX / 2) &&
+                    this.event !== "a") {
+                    this.event = "d";
+                }
+
+                else if((this.snake.fruit.y > this.snake.body[this.snake.body.length-1].y ||
+                    this.snake.body[this.snake.body.length-1].y - this.snake.fruit.y > winY / 2) &&
+                    this.event !== "w") {
+                    this.event = "s";
+                }
+            }
+
+        }
+
+        constructor() {
+            this.snake = new Snake();
+            this.event = "";
+            this.isAuto = false;
+            this.endless = false;
+            this.smartAuto = true;
+            window.addEventListener("keypress", evt => {
+                if((this.event === "a" && evt.key !== "d") ||
+                    (this.event === "w" && evt.key !== "s") ||
+                    (this.event === "d" && evt.key !== "a") ||
+                    (this.event === "s" && evt.key !== "w") || this.event === "") {
+                    this.event = evt.key;
+                }
+            });
+            this.run();
+        }
+    }
+
+    game = new Game();
+
+</script>
+</body>
+</html>

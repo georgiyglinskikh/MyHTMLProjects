@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Roboto+Mono|Roboto+Slab&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Мой компьютер</title>
+</head>
+
+<body>
+    <style>
+        /*
+        Colors:
+            Dark primary #455a64
+            Light primary #cfd8dc
+            Primary #607d8b
+            Text / Icons #ffffff
+            Primary text #212121
+            Secondary text #757575
+            Divider color #bdbdbd
+
+            Background #fafafa
+            Dark background #374046
+
+        Fonts:
+            Text 'Roboto Slab'
+            Controls 'Roboto'
+            Secondary / information 'Roboto'
+
+            You may try to use 'Roboto Mono'
+        */
+
+        @media (orientation: portrait) {
+            body {
+                margin: 0 0 0 0;
+
+                background-color: #374046;
+            }
+        }
+
+        @media (orientation: landscape) {
+            body {
+                margin: 0 20% 0 20%;
+
+                background-color: #374046;
+            }
+        }
+
+        #content {
+            height: 100%;
+
+            font-family: 'Roboto Slab', serif;
+
+            background-color: #fafafa;
+            color: #212121;
+        }
+
+        nav {
+            display: flex;
+            background-color: #607d8b;
+        }
+
+        .tabs {
+            width: 34%;
+
+            flex-direction: row;
+
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+
+            color: #ffffff;
+
+            transition: box-shadow ease 0.5s;
+            box-shadow: 0 0 0 #fff;
+        }
+
+        .tabs:hover {
+            transition: box-shadow ease 0.5s;
+            box-shadow: 0 3px 3px #455a64;
+        }
+
+        a.nodecoration {
+            text-decoration: none;
+        }
+
+        .text {
+            color: #212121;
+        }
+
+        #main>* {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        p {
+            text-indent: 30px;
+        }
+
+        table {
+            width: 100%;
+            border: 1px solid #bdbdbd;
+            box-shadow: 0 3px 3px #455a64;
+        }
+
+        tr:nth-child(2n) {
+            background-color: #bdbdbd;
+        }
+
+        td:nth-child(2n) {
+            text-align: right;
+        }
+
+        #footer {
+            height: 150px;
+            width: 100%;
+            background-color: #455a64;
+            font-weight: 500;
+            color: #fafafa;
+            display: flex;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #footer>div>* {
+            color: #fafafa;
+        }
+
+        br {
+            height: 1px;
+            border: 1px solid #bdbdbd;
+        }
+    </style>
+    <div id="content">
+        <nav>
+            <a href="index.html" class="tabs nodecoration">Начало</a>
+            <a href="#plan" class="tabs nodecoration">План</a>
+            <a href="#footer" class="tabs nodecoration">О себе</a>
+        </nav>
+        <div id="main">
+            <h1>Моя мечта - мой компьютер</h1>
+            <hr>
+            <div id="plan">
+                <h2>План:</h2>
+                <ul>
+                    <li><a href="#history" class="nodecoration text">Предыстория</a></li>
+                    <li>
+                        <a href="#parts" class="nodecoration text">Комплектующие</a>
+                        <ul>
+                            <li><a href="#first" class="nodecoration text">Первая сборка</a></li>
+                            <li><a href="#second" class="nodecoration text">Вторая сборка</a></li>
+                            <li><a href="#third" class="nodecoration text">Третья сборка</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#footer" class="nodecoration text">О себе</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="history">
+                <h2>Предыстория</h2>
+                <p>
+                    Все мы работаем за компьютером. Ну, или так или иначе взаимодействуем с ним. Мы читаем, рисует,
+                    просто сидим в интернете...
+                </p>
+                <p>
+                    Со временем мы погружаемся в этот необычный мир все больше и больше. <br>
+                    С самого детства мы сначала учимся запускать компьютер, затем мы запускаем программы, ближе к
+                    школьному возросту мы умеем и установливать программы.
+                </p>
+                <p>
+                    Многие на этом и заканчивают свой путь знакомства. Мои родные, друзья, люди вокруг - все они умеют
+                    делать эти простые действия. Но не я...
+                </p>
+                <p>
+                    Все началось когда я начал копить на ноутбук. Я столкнулся с проблемой, которую я сначала не
+                    заметил.
+                    Оказалось на рынке очень сложные отношения и большое разнообразие составляющих в которых прямо с
+                    места не разберешься.
+                    Я ничего не понимал, и спрашивал маму, дядю, но не вседа они знали ответ.
+                    В итоге я купил ноутбук. Со средними, на тот момент (конец 2014 года), характеристиками (Intel
+                    Pentium 3450N, Nvidia GT 920m, 4gb ddr3), и он меня вполне устраивал.
+                </p>
+                <p>
+                    Но когда я вышел в школу после каникул, я увидел, что мои одноклассники отлично в этом разбираются и
+                    под конец учебного года я решил во всем разобраться.
+                    Я все лето смотрел видео, читал статьи, думал о строении компьютера. В тот момент я понял, что я
+                    почти во всем разобрался.
+                    И во мне зародилась мысль самому собрать компьютер.
+                </p>
+                <p>
+                    Прошло полгода, наступала весна. Я все это время тратил свои карманные деньги на мелкую
+                    электроннику, в большей степени на наушники.
+                    Но я вспомнил о своей идее и решил что пора ее реализовывать.
+                </p>
+            </div>
+            <div id="parts">
+                <h2>
+                    Комплектующие
+                </h2>
+                <div id="first">
+                    <h3>
+                        Сборка первая "Гипер пень на максималках"
+                    </h3>
+                    <p>
+                        Я проанализировал рынок, и пришел к выводу, что у меня будет бюджет ~30000 рублей и поначалу я
+                        решил
+                        собрать на:
+                    </p>
+                    <table>
+                        <tr>
+                            <td>Процессор</td>
+                            <td>Intel Pentium 4600G</td>
+                        </tr>
+                        <tr>
+                            <td>Видеокарта</td>
+                            <td>Nvidia GTX 1050ti</td>
+                        </tr>
+                        <tr>
+                            <td>Оперативная память</td>
+                            <td>Samsung 2400mhz 8gb ddr4</td>
+                        </tr>
+                        <tr>
+                            <td>Диски</td>
+                            <td>WD Blue 1tb</td>
+                        </tr>
+                    </table>
+                    <p>
+                        Сборка выходила средне-слабая даже по меркам конца 2017 - начала 2018 года. Я погуглил...
+                        Спросил друзей...
+                        И в это время для меня внезапно открылась компания AMD.
+                    </p>
+                </div>
+                <div id="second">
+                    <h3>
+                        Сборка вторая "Возвращение короля"
+                    </h3>
+                    <p>
+                        До той весны я думал, что на рынке существует только одна хорошая и современная компания которая
+                        производит процессоры -
+                        Intel, и одна, производящая видеокарты - Nvidia. <br>
+                        Но я узнал, что есть процесоры быстрее, дешевле и современнее чем Intel, и эти процессоры - AMD.
+                        Позже я решил собирать и вместе с видеокартой от AMD.
+                        Это оказаласть моя финальная сборка:
+                    </p>
+                    <table>
+                        <tr>
+                            <td>Процессор</td>
+                            <td>AMD Ryzen 2600x</td>
+                        </tr>
+                        <tr>
+                            <td>Видеокарта</td>
+                            <td>AMD Radeon 580 8gb</td>
+                        </tr>
+                        <tr>
+                            <td>Оперативная память</td>
+                            <td>Patriot 3200 8gb</td>
+                        </tr>
+                        <tr>
+                            <td>Диски</td>
+                            <td>WD Blue 1tb</td>
+                        </tr>
+                        <tr>
+                            <td>Материнская плата</td>
+                            <td>AsRock B450 Steel Legend</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="third">
+                    <h3>
+                        Сборка третья "Несуществующая"
+                    </h3>
+                    <p>
+                        Это возможная финальная сборка, если я накоплю только летом 2019. <br>
+                        В таблице только измененные компоненты:
+                    </p>
+                    <table>
+                        <tr>
+                            <td>Процессор</td>
+                            <td>AMD Ryzen 3600x</td>
+                        </tr>
+                        <tr>
+                            <td>Видеокарта</td>
+                            <td>AMD Radeon 680/3080 8gb</td>
+                        </tr>
+                        <tr>
+                            <td>Оперативная память</td>
+                            <td>Patriot 3500 8gb</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <h3>Заключение</h3>
+            <p>
+                Я очень рад иметь средства и желание для того, чтобы копить и покупать компьютер. А Ryzen - сила!!!
+            </p>
+        </div>
+        <footer id="footer">
+            <div>
+                Глинских Георгий, 14 лет<br>
+                <a href="mailto:glinskikhgeorgiy@gmail.com" class="nodecoration text">glinskikhgeorgiy@gmail.com</a><br>
+                ©glinskikhgeorgiy
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

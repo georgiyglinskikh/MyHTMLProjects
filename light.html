@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>light</title>
+</head>
+<body>
+<style>
+    #canvas {
+        width: 720px;
+        height: 720px;
+    }
+</style>
+
+<canvas id="canvas" width="720" height="720">Ваш браузер не поддерживает canvas</canvas>
+
+<hr>
+
+<div id="input">
+    <input type="text" id="angle1" placeholder="Введите угол 1"><br>
+    <input type="text" id="n1" placeholder="Введите коофицент n1"><br>
+    <input type="text" id="n2" placeholder="Введите коофицент n2"><br>
+    <input type="button" value="Посчитать" onclick="calculate();">
+</div>
+
+<script>
+    var canvas = /** @type {HTMLCanvasElement} */ (document.getElementById('canvas'));
+    var canvasContext = canvas.getContext("2d");
+
+    var angle1 = /** @type {HTMLInputElement} */(document.getElementById('angle1'));
+    var n1 = /** @type {HTMLInputElement} */(document.getElementById('n1'));
+    var n2 = /** @type {HTMLInputElement} */(document.getElementById('n2'));
+
+    const toRadians = (angle) => angle * Math.PI / 180;
+    const toGrads = (angle) => angle * 180 / Math.PI;
+
+    function drawLine(x0, y0, x1, y1, color) {
+        if(!color) color = 'black';
+        canvasContext.beginPath();
+        canvasContext.moveTo(x0, y0);
+        canvasContext.lineTo(x1, y1);
+        canvasContext.closePath();
+        canvasContext.strokeStyle = color;
+        canvasContext.stroke();
+    }
+
+    function calculate() {
+        canvasContext.fillStyle = '#fff';
+        canvasContext.fillRect(0, 0, 720, 720);
+
+        drawLine(0, 240, 720, 240, '#666');
+        drawLine(0, 480, 720, 480, '#666');
+
+        var cos1 = Math.cos(toRadians(Number(angle1.value)));
+        var sin1 = Math.sin(toRadians(Number(angle1.value)));
+
+        var sin2 = Math.sin(toRadians(90) - toRadians(angle1.value)) / Number(n2.value);
+
+        var x0 = 480 + cos1 * 240;
+        var y0 = 240 - sin1 * 240;
+
+        var x1 = 480;
+        var y1 = 240;
+
+        var x2 = 480 - sin2 * 240;
+        var y2 = 480;
+
+        var x3 = x2 - cos1 * 240;
+        var y3 = 480 + sin1 * 240;
+
+        drawLine(x0, y0, x1, y1);
+        drawLine(x1, y1, x2, y2);
+        drawLine(x2, y2, x3, y3);
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if(e.key == 'ArrowUp' && Number(angle1.value) < 180) 
+            angle1.value = String(Number(angle1.value) + 1);
+        if(e.key == 'ArrowDown' && Number(angle1.value) > 0) 
+            angle1.value = String(Number(angle1.value) - 1);
+        calculate();
+    });
+</script>
+</body>
+</html>
